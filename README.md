@@ -1,17 +1,24 @@
-# Chromatic Innovision Advertising Website
+# Chromatic Innovision Advertising Website V2
 
-This is a simple bilingual one-page website for chromatic.my.
+Updated one-page website for chromatic.my, redesigned based on the 2026 Chromatic company portfolio.
 
-## Files
+## Files to upload
 - index.html
 - style.css
-- logo.png optional: replace with your company logo file
+- assets/ folder
 
-## How to use
-1. Upload all files to GitHub.
-2. Deploy with Vercel, Netlify or Render Static Site.
-3. Point chromatic.my DNS to the hosting platform.
+## Deploy update on GitHub + Vercel
+1. Open your GitHub repository: chromatic-website
+2. Upload or replace `index.html` and `style.css`
+3. Upload the full `assets` folder
+4. Commit changes
+5. Vercel will auto-deploy
 
-## Contact numbers
-- 011-2640 6755
-- 011-5143 6755
+## Important
+- Do not remove the `assets` folder. The website uses images from it.
+- WhatsApp numbers are set to:
+  - 011-2640 6755
+  - 011-5143 6755
+- Emails are set to:
+  - admin@chromatic.my
+  - nixonlaw@chromatic.my
