@@ -30,3 +30,83 @@ a{color:inherit;text-decoration:none}
 .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s ease}.reveal.is-visible{opacity:1;transform:translateY(0)}.delay-1{transition-delay:.12s}.delay-2{transition-delay:.22s}@keyframes marquee{to{transform:translateX(-50%)}}@keyframes float{to{transform:translateY(-18px)}}@keyframes spin{to{transform:rotate(360deg)}}
 @media (max-width:1020px){.hero-grid,.split-grid,.founder-grid,.philosophy-grid,.contact-grid{grid-template-columns:1fr}.hero{padding-top:130px}.hero-visual{min-height:560px}.service-grid,.industry-grid,.work-grid{grid-template-columns:repeat(2,1fr)}.service-card.wide{grid-column:span 2}.process-line{grid-template-columns:repeat(2,1fr)}.work-heading{align-items:flex-start;flex-direction:column}.nav-links{display:none}}
 @media (max-width:680px){.container{width:min(100% - 28px,1160px)}.section{padding:80px 0}.site-header{top:10px;width:calc(100% - 20px);padding:9px}.brand{min-width:auto}.brand-logo{padding:8px 10px}.brand-logo img{width:154px}.nav-cta{padding:10px 14px;font-size:13px;margin-left:auto}.hero{padding-top:118px}.hero-grid{gap:34px}h1{font-size:48px;letter-spacing:-.06em}.lead{font-size:24px}.hero-visual{min-height:440px}.main-frame{width:94%;top:10px}.floating-card{min-width:170px;padding:14px 16px}.card-top{top:38px}.card-bottom{bottom:48px}.orbital-ring{width:240px;height:240px}.stat-row,.service-grid,.industry-grid,.work-grid,.process-line{grid-template-columns:1fr}.service-card.wide{grid-column:span 1;display:block}.image-stack{min-height:520px}.img-main{width:92%;height:390px}.img-overlap{width:58%;height:220px}.caption-card{left:18px;right:18px}.quote-card{padding:30px;border-radius:30px}blockquote{font-size:33px}.work-card{min-height:380px}.footer-grid{align-items:flex-start;flex-direction:column}.cursor-glow{display:none}}
+
+/* ============================================================
+   PREMIUM 3D ENHANCEMENT LAYER
+   Adds depth, tilt-interaction, parallax and glass refinements
+   on top of the existing design system without altering markup.
+   ============================================================ */
+
+:root{
+  --tilt-perspective:1200px;
+  --glare-opacity:0;
+  --glare-x:50%;
+  --glare-y:50%;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+/* --- Header: light-catch edge --- */
+.site-header{position:fixed;background:linear-gradient(180deg,rgba(8,28,56,.78),rgba(3,21,45,.78));box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 18px 40px rgba(0,0,0,.32),0 0 0 1px rgba(57,200,255,.06)}
+.site-header.scrolled{box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 24px 60px rgba(0,0,0,.4),0 0 0 1px rgba(57,200,255,.1)}
+.brand-logo{box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 8px 18px rgba(3,21,45,.18);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.brand:hover .brand-logo{transform:translateY(-1px) scale(1.02)}
+.nav-cta{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.nav-cta:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 16px 34px rgba(255,255,255,.22)}
+
+/* --- Hero: layered 3D parallax stage --- */
+.hero-visual{perspective:1600px}
+.visual-frame.main-frame{transform-style:preserve-3d;transform:rotateY(calc(var(--py,0)*-1deg)) rotateX(calc(var(--px,0)*1deg)) translateZ(0);transition:transform .25s cubic-bezier(.2,.8,.2,1);box-shadow:0 50px 110px rgba(0,0,0,.42),0 4px 0 rgba(255,255,255,.06) inset}
+.floating-card{transform:translate3d(calc(var(--px,0)*1.6px),calc(var(--py,0)*1.6px),0)}
+.card-bottom{transform:translate3d(calc(var(--px,0)*-1.4px),calc(var(--py,0)*-1.4px),0)}
+.orbital-ring{transform:translate3d(calc(var(--px,0)*-2.2px),calc(var(--py,0)*-2.2px),0) rotate(0deg);box-shadow:0 0 40px rgba(57,200,255,.08)}
+
+/* --- Generic 3D tilt-card system (JS sets --rx/--ry) --- */
+.service-card,.work-card,.industry-card,.process-step,.quote-card,.contact-card,.portrait-card,.stat-row div{
+  --rx:0deg;--ry:0deg;
+  transform-style:preserve-3d;
+  transform:perspective(var(--tilt-perspective)) rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
+  will-change:transform;
+  position:relative;
+}
+.service-card:hover,.process-step:hover,.stat-row div:hover{box-shadow:0 30px 70px rgba(3,21,45,.4),0 1px 0 rgba(255,255,255,.08) inset}
+.work-card:hover,.industry-card:hover{box-shadow:0 40px 90px rgba(3,21,45,.5)}
+.quote-card:hover,.contact-card:hover{box-shadow:0 36px 90px rgba(3,21,45,.18)}
+.portrait-card:hover{box-shadow:0 40px 90px rgba(3,21,45,.3)}
+
+/* glare sheen following pointer on tilted cards */
+.service-card::after,.work-card::after,.industry-card::after,.process-step::after,.quote-card::after,.contact-card::after,.portrait-card::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;
+  background:radial-gradient(circle at var(--glare-x) var(--glare-y),rgba(255,255,255,.28),transparent 42%);
+  opacity:var(--glare-opacity);transition:opacity .25s ease;mix-blend-mode:overlay;
+}
+.service-card:hover::after,.process-step:hover::after,.quote-card:hover::after,.contact-card:hover::after,.portrait-card:hover::after{--glare-opacity:.55}
+.work-card:hover::after,.industry-card:hover::after{--glare-opacity:.32;mix-blend-mode:soft-light}
+
+/* depth for service icon numerals */
+.service-card span,.process-step span{transform:translateZ(28px);display:inline-block}
+.service-card h3,.process-step p{transform:translateZ(18px)}
+
+/* buttons: tactile 3D press */
+.btn{position:relative;transform:translateZ(0);box-shadow:0 14px 30px rgba(3,21,45,.16),0 1px 0 rgba(255,255,255,.5) inset}
+.btn-primary,.btn-primary.dark{box-shadow:0 22px 45px rgba(57,200,255,.28),0 1px 0 rgba(255,255,255,.7) inset}
+.btn-ghost{box-shadow:0 1px 0 rgba(255,255,255,.14) inset}
+.btn:active{transform:translateY(1px) scale(.985);box-shadow:0 8px 18px rgba(3,21,45,.2)}
+
+/* image-stack depth separation */
+.image-stack{perspective:1400px}
+.img-main{transform:translateZ(0) rotateY(-3deg);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.image-stack:hover .img-main{transform:rotateY(0deg) translateZ(10px)}
+.img-overlap{box-shadow:0 30px 60px rgba(3,21,45,.32),0 0 0 8px #fff}
+.caption-card{box-shadow:0 24px 50px rgba(3,21,45,.4),0 1px 0 rgba(255,255,255,.08) inset}
+
+/* mission cards subtle lift */
+.mission-cards article{transition:transform .35s cubic-bezier(.2,.8,.2,1),background .35s,border-color .35s}
+.mission-cards article:hover{transform:translateY(-6px);background:rgba(255,255,255,.12);border-color:rgba(57,200,255,.32)}
+
+@media (max-width:1020px){
+  .service-card,.work-card,.industry-card,.process-step,.quote-card,.contact-card,.portrait-card,.stat-row div,.visual-frame.main-frame{transform:none!important}
+  .service-card::after,.work-card::after,.industry-card::after,.process-step::after,.quote-card::after,.contact-card::after,.portrait-card::after{display:none}
+}
